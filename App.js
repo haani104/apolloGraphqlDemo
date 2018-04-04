@@ -6,6 +6,8 @@
 
 import React, { Component } from 'react';
 import Home from './src/pages/Home'
+import Parent from './src/pages/Parent'
+
 
 import ApolloClient from 'apollo-boost'
 import { ApolloProvider } from 'react-apollo'
@@ -18,7 +20,8 @@ export default class App extends Component {
   render() {
     return (
       <ApolloProvider client={client}>
-        <Home />
+      {/* <Home abc={1}/> */}
+        <Parent/>
       </ApolloProvider>
     );
   }
