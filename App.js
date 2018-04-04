@@ -10,11 +10,11 @@ import Home from './src/pages/Home'
 import ApolloClient from 'apollo-boost'
 import { ApolloProvider } from 'react-apollo'
 
-const client = new ApolloClient({ uri: 'https://nx9zvp49q7.lp.gql.zone/graphql' });
+const client = new ApolloClient({
+  uri: 'https://gql-staging.tokopedia.com/'
+});
 
-type Props = {};
-
-export default class App extends Component<Props> {
+export default class App extends Component {
   render() {
     return (
       <ApolloProvider client={client}>

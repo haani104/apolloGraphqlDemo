@@ -8,28 +8,62 @@ import {
   View
 } from 'react-native'
 
-import Dog from '../component/Dog'
+import Categories from '../component/Categories'
 
-const GET_DOG = gql`
-  query {
-    dog(breed: "bulldog") {
+const CATEGORY_QUERY = gql` query getContent($limit: Int!, $cursor: String, $idcategory: Int!) {
+  get_discovery_kol_data(limit: $limit, cursor: $cursor, idcategory: $idcategory) {
+    error
+    categories {
       id
-      breed
-      displayImage
+      name
     }
+    postKol {
+      isLiked
+      isFollow
+      id
+      commentCount
+      likeCount
+      createTime
+      description
+      content {
+        imageurl
+        tags {
+          id
+          type
+          url
+          link
+          price
+          caption
+        }
+      }
+      userName
+      userInfo
+      userIsFollow
+      userPhoto
+      userUrl
+      userId
+    }
+    lastCursor
   }
-`
+}`
+
+const handleOnCategoryTouch = (id) => {
+  //Again call the query
+}
 
 const Home = () => (
-  <Query query={GET_DOG}>
+  <Query
+    query={CATEGORY_QUERY}
+    variables={{ limit: 20, cursor: "", idcategory: 0 }}
+  >
     {({ loading, error, data }) => {
       if (loading) return <Text>Loading...</Text>;
       if (error) return <Text>Error :(</Text>;
-
       return (
-        <Dog
-          url={data.dog.displayImage}
-          breed={data.dog.breed}
+        <Categories
+          categories={data.get_discovery_kol_data.categories}
+          content={data.get_discovery_kol_data.postKol}
+          onCategoryTouch={handleOnCategoryTouch}
         />
       )
     }}

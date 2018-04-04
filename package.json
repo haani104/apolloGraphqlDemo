@@ -7,11 +7,13 @@
     "test": "jest"
   },
   "dependencies": {
+    "@ptomasroos/react-native-multi-slider": "^0.0.12",
     "apollo-boost": "^0.1.3",
     "graphql": "^0.13.2",
     "react": "^16.3.0-alpha.1",
     "react-apollo": "^2.1.0-beta.3",
-    "react-native": "0.54.2"
+    "react-native": "0.54.2",
+    "unify-react-native": "^0.0.32"
   },
   "devDependencies": {
     "babel-jest": "23.0.0-alpha.0",
