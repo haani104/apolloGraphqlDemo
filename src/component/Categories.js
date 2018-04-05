@@ -1,10 +1,12 @@
 import React from 'react'
 import { ScrollView, View, FlatList, Text, Image } from 'react-native'
 import Category from './Category'
+import Tabs from './Tabs'
 
 const Categories = ({ categories, content, onLoadMore, onCatChange }) => {
   return (
     <View style={{ flex: 1, }}>
+      <Tabs />
       <ScrollView horizontal>
         {
           categories.map(c => {

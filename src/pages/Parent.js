@@ -1,47 +1,62 @@
 import React from 'react'
+import { debounce } from 'lodash';
 import Home from './Home'
 
 import { View } from 'react-native'
 
 import SearchBar from '../component/SearchBar'
+import CategoryContainer from '../component/CategoryContainer'
+import Tabs from '../component/Tabs'
 
 class Parent extends React.Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            activeCatId: 0,
-            searchText: ''
-        }
+  constructor(props) {
+    super(props)
+    this.state = {
+      activeCatId: 0,
+      searchText: ''
     }
 
-    handleChangeText = (text) => {
-        this.setState({
-            searchText: text,
-            activeCatId: 0,
-        })
-    }
+    this.handleChangeText = debounce(this.handleChangeText, 1000, { trailing: true, leading: true });
+  }
 
-    changeCatId = (id) => {
-        console.log('ID', id)
-        this.setState({
-            activeCatId: id,
-        })
-    }
+  handleChangeText = (text) => {
+    console.log('handleChangeText called')
+    this.setState({
+      searchText: text,
+    })
+  }
 
-    render() {
-        return (
-            <View style={{flex: 1}}>
-                <SearchBar
-                    text={this.state.searchText}
-                    onChangeText={this.handleChangeText}/>
-                <Home
-                    catId={this.state.activeCatId}
-                    changeCatId={this.changeCatId}
-                    searchText={this.state.searchText}
-                />
-            </View>
-        )
-    }
+  changeCatId = (id) => {
+    console.log('ID', id)
+    this.setState({
+      activeCatId: id,
+    })
+  }
+
+  handleLoadProducts = () => {
+    console.log('LOAD FROM API');
+  }
+
+  render() {
+    return (
+      <View style={{ flex: 1, paddingVertical: 20 }}>
+        <SearchBar
+          handleChangeText={this.handleChangeText}
+          searchText={this.state.searchText}
+        />
+        <Tabs searchText={this.state.searchText} />
+        {/* <CategoryContainer /> */}
+        {/* <SearchBar
+          text={this.state.searchText}
+          onChangeText={this.handleChangeText} />
+        <Home
+          catId={this.state.activeCatId}
+          changeCatId={this.changeCatId}
+          searchText={this.state.searchText}
+        /> */}
+      </View>
+    )
+  }
 }
 
 export default Parent

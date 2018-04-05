@@ -20,7 +20,6 @@ export default class App extends Component {
   render() {
     return (
       <ApolloProvider client={client}>
-      {/* <Home abc={1}/> */}
         <Parent/>
       </ApolloProvider>
     );
