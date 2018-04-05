@@ -2,26 +2,25 @@ import React from 'react'
 import { ScrollView, View, FlatList, Text } from 'react-native'
 import Category from './Category'
 
-const Categories = ({ categories, content, onCategoryTouch ,lastCursor}) => {
+const Categories = ({ categories, onCategoryTouch }) => {
+  console.log("in Categories",categories);
   return (
     <View style={{ flex: 1, }}>
-      <ScrollView vertical>
+      <ScrollView horizontal>
         {
           categories.map(c => {
-            return <Category
+            return (
+            <Category
               c={c}
               key={c.id}
               onCategoryTouch={onCategoryTouch}
             />
+              
+              )
           })
         }
-    <Text>{lastCursor}</Text>
       </ScrollView>
-      <FlatList
-        data={content}
-        renderItem={({ item }) => <Text>{item.userPhoto}</Text>}
-        keyExtractor={(item) => item.id}
-      />
+      
     </View>
   )
 }
