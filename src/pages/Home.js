@@ -86,6 +86,7 @@ class Home extends React.Component {
   }
 
   render(){
+    console.log('state**',this.state)
     return(
           <Query
             query={CATEGORY_QUERY}
