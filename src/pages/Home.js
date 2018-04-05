@@ -47,27 +47,69 @@ const CATEGORY_QUERY = gql` query getContent($limit: Int!, $cursor: String, $idc
   }
 }`
 
-const handleOnCategoryTouch = (id) => {
+
+//this.state ={id:0}
+
+// const handleOnCategoryTouch = (id) => {
+//   //Again call the query
+//   this.state.id=id;
+// }
+// const Home = () => (
+//   <Query
+//     query={CATEGORY_QUERY}
+//     variables={{ limit: 20, cursor: "", idcategory: this.state.id}}
+//   >
+//     {({ loading, error, data }) => {
+//       if (loading) return <Text>Loading...</Text>;
+//       if (error) return <Text>Error :(</Text>;
+//       return (
+//         <Categories
+//           categories={data.get_discovery_kol_data.categories}
+//           content={data.get_discovery_kol_data.postKol}
+//           onCategoryTouch={handleOnCategoryTouch}
+//         />
+//       )
+//     }}
+//   </Query>
+// )
+
+class Home extends React.Component {
+
+  constructor(props){
+    super(props);
+    this.state={id:0}
+  }
+
+  handleOnCategoryTouch = (id) => {
   //Again call the query
-}
+  this.setState({id:id})
+  }
 
-const Home = () => (
-  <Query
-    query={CATEGORY_QUERY}
-    variables={{ limit: 20, cursor: "", idcategory: 0 }}
-  >
-    {({ loading, error, data }) => {
-      if (loading) return <Text>Loading...</Text>;
-      if (error) return <Text>Error :(</Text>;
-      return (
-        <Categories
-          categories={data.get_discovery_kol_data.categories}
-          content={data.get_discovery_kol_data.postKol}
-          onCategoryTouch={handleOnCategoryTouch}
-        />
+  render(){
+    return(
+          <Query
+            query={CATEGORY_QUERY}
+            variables={{ limit: 20, cursor: "", idcategory: this.state.id}}
+          >
+            {({ loading, error, data }) => {
+              if (loading) return <Text>Loading...</Text>;
+              if (error) return <Text>Error :(</Text>;
+              return (
+                <Categories
+                  categories={data.get_discovery_kol_data.categories}
+                  content={data.get_discovery_kol_data.postKol}
+                  onCategoryTouch={this.handleOnCategoryTouch}
+                  lastCursor={data.get_discovery_kol_data.lastCursor}
+                />
+              )
+            }}
+          </Query>
+
       )
-    }}
-  </Query>
-)
 
+  }
+  
+          
+          
+ }
 export default Home

@@ -2,10 +2,10 @@ import React from 'react'
 import { ScrollView, View, FlatList, Text } from 'react-native'
 import Category from './Category'
 
-const Categories = ({ categories, content, onCategoryTouch }) => {
+const Categories = ({ categories, content, onCategoryTouch ,lastCursor}) => {
   return (
     <View style={{ flex: 1, }}>
-      <ScrollView horizontal>
+      <ScrollView vertical>
         {
           categories.map(c => {
             return <Category
@@ -15,10 +15,11 @@ const Categories = ({ categories, content, onCategoryTouch }) => {
             />
           })
         }
+    <Text>{lastCursor}</Text>
       </ScrollView>
       <FlatList
         data={content}
-        renderItem={({ item }) => <Text>{item.id}</Text>}
+        renderItem={({ item }) => <Text>{item.userPhoto}</Text>}
         keyExtractor={(item) => item.id}
       />
     </View>
