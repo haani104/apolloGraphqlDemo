@@ -1,26 +1,24 @@
 import React from 'react';
 import * as _ from 'lodash';
 import Categories from './Categories';
-import {CATEGORY_QUERY} from '../queries';
+import { CATEGORY_QUERY } from '../queries';
 import { graphql } from 'react-apollo';
 import {
   Text,
-  View
+	View,
+	StyleSheet
 } from 'react-native'
+
+const styles = StyleSheet.create({
+
+})
 
 class MainCategories extends React.Component{
 	render(){
 		console.log("maincategories",this.props.categories)
 		return (
 			<View>
-				{this.props.loading && <Text>Loading...</Text> }
-				{this.props.error && <Text>Error :(</Text> }
-				{this.props.categories.length && 
-					<Categories
-	                  categories={this.props.categories}
-	                  onCategoryTouch={this.props.handleOnCategoryTouch}
-	                />
-	            }
+				<Text>inside main Categories</Text>
 			</View>		
 			)
 	}
@@ -37,6 +35,7 @@ const mapResultsToProps = ({ data }) => ({
 })
 
 
-export default graphql(CATEGORY_QUERY, 
-{ options: mapOptionsToProps, props: mapResultsToProps })(MainCategories)
+// export default graphql(CATEGORY_QUERY, 
+// { options: mapOptionsToProps, props: mapResultsToProps })(MainCategories)
 
+export default MainCategories
