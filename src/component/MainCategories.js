@@ -11,15 +11,31 @@ import {
 } from 'react-native'
 
 const styles = StyleSheet.create({
-
+	mainCategories: {
+		minWidth: 91,
+	    padding: 9,
+	    marginLeft: 8,
+	    borderWidth:1,
+	    borderStyle:'solid',
+	    borderColor:'#e0e0e0',
+	    borderRadius: 15,
+	    backgroundColor: '#fafafa',
+	},
+	text:{
+		fontSize: 11,
+    	color: '#000',
+    	margin: 0,
+    	fontWeight: 'normal',
+    	textAlign:'center',
+	}
 })
 
 class MainCategories extends React.Component{
 
 	displayCategories(categories){
 		return categories.map(cat =>{
-			return <TouchableOpacity key={cat.id} onPress={() => this.props.handleOnCategoryTouch(cat.id)}>
-					<Text style={{ borderWidth: 1, padding: 10, borderColor: 'green' }}>{cat.name}</Text>
+			return <TouchableOpacity style={styles.mainCategories} key={cat.id} onPress={() => this.props.handleOnCategoryTouch(cat.id)}>
+					<Text style={styles.text}>{cat.name}</Text>
 				</TouchableOpacity>	
 		})
 	}
@@ -27,7 +43,7 @@ class MainCategories extends React.Component{
 	render(){
 		const mainCategories = this.props.categories
 		return (
-			<View >
+			<View style={{padding:5}}>
 				<ScrollView horizontal>
 				{mainCategories && this.displayCategories(mainCategories)}
 				</ScrollView>
