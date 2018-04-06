@@ -5,6 +5,7 @@ import {
 } from 'react-native'
 
 import MainCategories from '../component/MainCategories'
+import Categories from '../component/Categories'
 
 const styles = StyleSheet.create({
 	container: {
@@ -30,6 +31,7 @@ class Home extends React.Component {
             <MainCategories
               handleOnCategoryTouch={this.handleOnCategoryTouch}
             />
+            <Categories />
          </View>
       )
 

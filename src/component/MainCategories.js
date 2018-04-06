@@ -1,8 +1,9 @@
 import React from 'react';
-import * as _ from 'lodash';
+import result from 'lodash/result';
 import Categories from './Categories';
 import { CATEGORY_QUERY } from '../queries';
 import { graphql } from 'react-apollo';
+
 import {
   Text,
 	View,
@@ -24,18 +25,21 @@ class MainCategories extends React.Component{
 	}
 }
 
-const mapOptionsToProps = ({ parent }) => ({
-  variables: { limit: 20, cursor: "", idcategory: 0}
-})
+const mapPropsToOptions = ({ parent }) => {
+	return ({
+		variables: { limit: 20, cursor: "", idcategory: 0}
+	})
+	
+}
+const mapResultsToProps = ({ data }) => {
+	return ({
+		loading: data.loading,
+		categories: result(data, 'get_discovery_kol_data.categories', []),
+		errors: result(data, 'get_discovery_kol_data.errors', null),
+	})
+	
+}
 
-const mapResultsToProps = ({ data }) => ({
-  loading: data.loading,
-  categories: _.result(data, 'get_discovery_kol_data.categories', []),
-  errors: _.result(data, 'get_discovery_kol_data.errors', null),
-})
+export default graphql(CATEGORY_QUERY, 
+{ options: mapPropsToOptions, props: mapResultsToProps })(MainCategories)
 
-
-// export default graphql(CATEGORY_QUERY, 
-// { options: mapOptionsToProps, props: mapResultsToProps })(MainCategories)
-
-export default MainCategories

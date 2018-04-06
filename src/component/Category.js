@@ -16,11 +16,6 @@ const Category = ({ c, onCategoryTouch }) => {
 export default Category;
 
 
-
-
-
-
-
 // import React from 'react'
 // import { Chip } from 'unify-react-native'
 // import { ScrollView,View, Text, TouchableOpacity } from 'react-native'
