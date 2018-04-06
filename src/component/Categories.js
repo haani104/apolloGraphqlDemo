@@ -30,18 +30,15 @@ class Categories extends React.Component{
   }
   onLoadMore(){
     this.props.fetchMore({
-      variables: {
-        offset: { limit: 20, cursor: this.props.lastCursor, idcategory: this.props.parent}
-      },
+      variables: { limit: 20, cursor: this.props.lastCursor, idcategory: this.props.parent},
       updateQuery: (prev, { fetchMoreResult }) => {
         if (!fetchMoreResult) return prev;
-        let abc =  Object.assign({}, prev, {
+        return Object.assign({}, prev, {
               get_discovery_kol_data: Object.assign({}, prev.get_discovery_kol_data, {
-                postKol: fetchMoreResult.get_discovery_kol_data.postKol || [],
+                postKol: prev.get_discovery_kol_data.postKol.concat(fetchMoreResult.get_discovery_kol_data.postKol)  || [],
                 lastCursor: fetchMoreResult.get_discovery_kol_data.lastCursor || '',
               })
             });
-        return abc
        }
     })
   }
