@@ -1,5 +1,5 @@
 import React from 'react'
-import { ScrollView, View, FlatList, Text, Image, StyleSheet, Dimensions } from 'react-native'
+import { ScrollView, View, FlatList, Text, Image, StyleSheet, Dimensions,ActivityIndicator, } from 'react-native'
 import Category from './Category'
 import { graphql } from 'react-apollo'
 import result from 'lodash/result';
@@ -13,31 +13,36 @@ const styles = StyleSheet.create({
     width: width/3,
     margin: 2
   },
+  container: {
+    flex: 1,
+    justifyContent: 'center'
+  },
+  horizontal: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    padding: 10
+  }
 })
 
 class Categories extends React.Component{
   constructor(props) {
     super(props)
-    this.state = {
-
-    }
   }
-  
+
   render(){
     const categories = this.props.categories
     return(
-      <FlatList 
-        numColumns = {3}
-        data = {categories}
-        renderItem = {(info) => {
-          return(
-          <Image key={info.index} 
-            source={{uri: info.item.userPhoto }} 
-            style={styles.image}/>
-        )
+      <View style={styles.container}>
+      { this.props.loading ? 
+        <View style={styles.horizontal}>
+            <ActivityIndicator size="large" color="#00ff00" />
+      </View> : 
+       <FlatList  numColumns = {3} data = {categories} renderItem = {(info) => {
+          return <Image key={info.index} source={{uri: info.item.content[0].imageurl}} style={styles.image}/>
         }}
       />
-
+    }
+</View>
     )
     
   }
