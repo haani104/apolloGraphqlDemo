@@ -1,5 +1,5 @@
 import React from 'react'
-import { ScrollView, View, FlatList, Text, Image, StyleSheet, Dimensions,ActivityIndicator, } from 'react-native'
+import { ScrollView, View, FlatList, Text, Image, StyleSheet, Dimensions,ActivityIndicator,Button } from 'react-native'
 import Category from './Category'
 import { graphql } from 'react-apollo'
 import result from 'lodash/result';
@@ -28,11 +28,29 @@ class Categories extends React.Component{
   constructor(props) {
     super(props)
   }
+  onLoadMore(){
+    this.props.fetchMore({
+      variables: {
+        offset: { limit: 20, cursor: this.props.lastCursor, idcategory: this.props.parent}
+      },
+      updateQuery: (prev, { fetchMoreResult }) => {
+        if (!fetchMoreResult) return prev;
+        let abc =  Object.assign({}, prev, {
+              get_discovery_kol_data: Object.assign({}, prev.get_discovery_kol_data, {
+                postKol: fetchMoreResult.get_discovery_kol_data.postKol || [],
+                lastCursor: fetchMoreResult.get_discovery_kol_data.lastCursor || '',
+              })
+            });
+        return abc
+       }
+    })
+  }
 
   render(){
-    const categories = this.props.categories
+    const categories = this.props.postKol
     return(
       <View style={styles.container}>
+      <Button title="Load More" onPress={()=>{this.onLoadMore()}}/>
       { this.props.loading ? 
         <View style={styles.horizontal}>
             <ActivityIndicator size="large" color="#00ff00" />
@@ -57,8 +75,10 @@ const mapPropsToOptions = ({ parent }) => {
 const mapResultsToProps = ({ data }) => {
 	return ({
 		loading: data.loading,
-		categories: result(data, 'get_discovery_kol_data.postKol', []),
+		postKol: result(data, 'get_discovery_kol_data.postKol', []),
+    lastCursor: result(data, 'get_discovery_kol_data.lastCursor', ''),
     errors: result(data, 'get_discovery_kol_data.errors', null),
+    fetchMore:data.fetchMore
 	})
 	
 }
