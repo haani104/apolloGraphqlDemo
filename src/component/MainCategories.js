@@ -1,13 +1,13 @@
 import React from 'react';
 import result from 'lodash/result';
-import Categories from './Categories';
 import { CATEGORY_QUERY } from '../queries';
 import { graphql } from 'react-apollo';
-
 import {
-  Text,
+  	Text,
 	View,
-	StyleSheet
+	StyleSheet,
+	ScrollView,
+	TouchableOpacity
 } from 'react-native'
 
 const styles = StyleSheet.create({
@@ -15,11 +15,22 @@ const styles = StyleSheet.create({
 })
 
 class MainCategories extends React.Component{
+
+	displayCategories(categories){
+		return categories.map(cat =>{
+			return <TouchableOpacity key={cat.id} onPress={() => this.props.handleOnCategoryTouch(cat.id)}>
+					<Text style={{ borderWidth: 1, padding: 10, borderColor: 'green' }}>{cat.name}</Text>
+				</TouchableOpacity>	
+		})
+	}
+
 	render(){
-		console.log("maincategories",this.props.categories)
+		const mainCategories = this.props.categories
 		return (
-			<View>
-				<Text>inside main Categories</Text>
+			<View >
+				<ScrollView horizontal>
+				{mainCategories && this.displayCategories(mainCategories)}
+				</ScrollView>
 			</View>		
 			)
 	}

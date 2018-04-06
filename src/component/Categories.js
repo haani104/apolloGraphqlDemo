@@ -1,5 +1,5 @@
 import React from 'react'
-import { ScrollView, View, FlatList, Text } from 'react-native'
+import { ScrollView, View, FlatList, Text,Image } from 'react-native'
 import Category from './Category'
 import { graphql } from 'react-apollo'
 import result from 'lodash/result';
@@ -16,9 +16,12 @@ class Categories extends React.Component{
   getCategories =(categories) => {
     let catArr = []
     categories.forEach((cat,index) => {
+
       catArr.push(
         <View>
-          <Text>{cat.userInfo}</Text>
+          <Image 
+            style={{width: 50, height: 50,borderColor:'green'}}
+            source={{uri:cat.userPhoto}}/>
         </View>
       )
     });
@@ -38,9 +41,8 @@ class Categories extends React.Component{
 }
 
 const mapPropsToOptions = ({ parent }) => {
-	console.log('in map props to option', parent)
 	return ({
-		variables: { limit: 20, cursor: "", idcategory: 0}
+		variables: { limit: 20, cursor: "", idcategory: parent}
 	})
 }
 
