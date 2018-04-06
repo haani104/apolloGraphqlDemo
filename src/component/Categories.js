@@ -1,10 +1,19 @@
 import React from 'react'
-import { ScrollView, View, FlatList, Text } from 'react-native'
+import { ScrollView, View, FlatList, Text, Image, StyleSheet, Dimensions } from 'react-native'
 import Category from './Category'
 import { graphql } from 'react-apollo'
 import result from 'lodash/result';
 
 import { CATEGORY_QUERY } from '../queries'
+
+let { width } = Dimensions.get('window');
+const styles = StyleSheet.create({
+  image: {
+    height: 104,
+    width: width/3,
+    margin: 2
+  },
+})
 
 class Categories extends React.Component{
   constructor(props) {
@@ -13,32 +22,27 @@ class Categories extends React.Component{
 
     }
   }
-  getCategories =(categories) => {
-    let catArr = []
-    categories.forEach((cat,index) => {
-      catArr.push(
-        <View>
-          <Text>{cat.userInfo}</Text>
-        </View>
-      )
-    });
-    return catArr
-  }
   render(){
     const categories = this.props.categories
     return(
-      <View style={{ flex: 1, }}>
-      <ScrollView >
-        {categories && this.getCategories(categories)}
-      </ScrollView>   
-    </View>
+      <FlatList 
+        numColumns = {3}
+        data = {categories}
+        renderItem = {(info) => {
+          return(
+          <Image key={info.index} 
+            source={{uri: info.item.userPhoto }} 
+            style={styles.image}/>
+        )
+        }}
+      />
+
     )
     
   }
 }
 
-const mapPropsToOptions = ({ parent }) => {
-	console.log('in map props to option', parent)
+const mapPropsToOptions = (param) => {
 	return ({
 		variables: { limit: 20, cursor: "", idcategory: 0}
 	})

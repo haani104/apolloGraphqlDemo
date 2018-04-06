@@ -31,7 +31,7 @@ class Home extends React.Component {
             <MainCategories
               handleOnCategoryTouch={this.handleOnCategoryTouch}
             />
-            <Categories />
+            <Categories/>
          </View>
       )
 
