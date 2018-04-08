@@ -9,11 +9,11 @@ class Tabs extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      indexActiveTab: 0,
+      indexActiveTab: 1,
     }
   }
 
-  handleChangeTab = () => {
+  handleChangeTab = ({item}) => {
     if (this.state.indexActiveTab === 0) {
       this.setState({ indexActiveTab: 1 })
     } else {
@@ -33,7 +33,9 @@ class Tabs extends React.Component {
           onItemPress={this.handleChangeTab}
         />
         {
-          this.state.indexActiveTab === 0 ? <CategoryContainer searchText={this.props.searchText}/> : <TopProfileContainer />
+          this.state.indexActiveTab === 0 ?
+            <CategoryContainer searchText={this.props.searchText} />
+            : <TopProfileContainer searchText={this.props.searchText} />
         }
       </View>
     )

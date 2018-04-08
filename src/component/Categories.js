@@ -5,7 +5,7 @@ import Tabs from './Tabs'
 
 const Categories = ({ categories, content, onLoadMore, onCatChange }) => {
   return (
-    <View style={{ flex: 1, }}>
+    <View>
       <Tabs />
       <ScrollView horizontal>
         {

@@ -3,8 +3,10 @@ import { FlatList, Text, View, Image, Dimensions } from 'react-native'
 import { Chip } from 'unify-react-native'
 import { Query } from 'react-apollo'
 import { gql } from 'apollo-boost'
+import { filter } from 'lodash'
 
 import TKPLoader from './TKPLoader'
+import NoSearch from './NoSearchResult'
 
 const { width } = Dimensions.get('window')
 const IMAGE_DIM = width / 3
@@ -54,9 +56,9 @@ class ContentList extends React.Component {
       <Image
         source={{ uri: item.content[0].imageurl }}
         style={{ width: IMAGE_DIM, height: IMAGE_DIM }}
-      />}
+      />
     </View>
-  );
+  )
 
   _loadMore = (fetchMore) => {
 
@@ -77,14 +79,27 @@ class ContentList extends React.Component {
           if (loading) return <TKPLoader />
           if (error) return <Text>Error :(</Text>
 
+            if (get_discovery_kol_data.postKol.length === 0) {
+              return (
+                <NoSearch />
+              )
+            }
+
+          // const postKolData = filter(get_discovery_kol_data.postKol, (p) => {
+          //   return (p[0].imageurl !== '')
+          // })
+
           return (
             <FlatList
-              // style={{flex: 1,}}
               data={get_discovery_kol_data.postKol}
               keyExtractor={this._keyExtractor}
               renderItem={this._renderItem}
               onEndReachedThreshold={0.5}
               numColumns={3}
+              ListFooterComponent={() => <View style={{ height: 10 }}></View>}
+              contentContainerStyle={{
+                paddingBottom: 230,
+              }}
               onEndReached={() => {
                 fetchMore({
                   query: CONTENT_QUERY,
