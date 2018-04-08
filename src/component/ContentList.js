@@ -9,7 +9,7 @@ import TKPLoader from './TKPLoader'
 import NoSearch from './NoSearchResult'
 
 const { width } = Dimensions.get('window')
-const IMAGE_DIM = width / 3
+const IMAGE_DIM = (width - 6) / 3
 
 const CONTENT_QUERY = gql` query getContent($limit: Int!, $cursor: String, $idcategory: Int!, $search: String) {
     get_discovery_kol_data(limit: $limit, cursor: $cursor, idcategory: $idcategory, search: $search) {
@@ -79,26 +79,27 @@ class ContentList extends React.Component {
           if (loading) return <TKPLoader />
           if (error) return <Text>Error :(</Text>
 
-            if (get_discovery_kol_data.postKol.length === 0) {
+            if (!get_discovery_kol_data || get_discovery_kol_data.postKol.length === 0) {
               return (
                 <NoSearch />
               )
             }
 
-          // const postKolData = filter(get_discovery_kol_data.postKol, (p) => {
-          //   return (p[0].imageurl !== '')
-          // })
+          const postKolData = filter(get_discovery_kol_data.postKol, (p) => {
+            return (p.content[0].imageurl !== '')
+          })
 
           return (
             <FlatList
-              data={get_discovery_kol_data.postKol}
+              data={postKolData}
               keyExtractor={this._keyExtractor}
               renderItem={this._renderItem}
               onEndReachedThreshold={0.5}
               numColumns={3}
               ListFooterComponent={() => <View style={{ height: 10 }}></View>}
               contentContainerStyle={{
-                paddingBottom: 230,
+                paddingBottom: 246,
+                paddingTop: 10,
               }}
               onEndReached={() => {
                 fetchMore({

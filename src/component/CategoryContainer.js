@@ -5,8 +5,6 @@ import { Query } from 'react-apollo'
 import { gql } from 'apollo-boost'
 import ContentList from './ContentList'
 
-
-
 const CATEGORY_QUERY = gql` query getContent($limit: Int!, $cursor: String, $idcategory: Int!, $search: String) {
     get_discovery_kol_data(limit: $limit, cursor: $cursor, idcategory: $idcategory, search: $search) {
       error
@@ -55,14 +53,13 @@ class CategoryContainer extends React.Component {
             const categoriesData = data.get_discovery_kol_data.categories || []
 
             return (
-              <View>
+              <View style={{ paddingTop: 16 }}>
                 <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                   {
                     categoriesData.map(c => {
                       return (
                         <View style={{
                           marginHorizontal: 4,
-                          paddingVertical: 4,
                         }} key={c.id}>
                           <Chip
                             onPress={() => this.setCatId(c.id)}
