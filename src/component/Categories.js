@@ -1,6 +1,5 @@
 import React from 'react'
 import { ScrollView, View, FlatList, Text, Image, StyleSheet, Dimensions,ActivityIndicator,Button } from 'react-native'
-import Category from './Category'
 import { graphql } from 'react-apollo'
 import result from 'lodash/result';
 
