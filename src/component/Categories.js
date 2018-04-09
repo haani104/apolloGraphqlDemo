@@ -1,6 +1,5 @@
 import React from 'react'
 import { ScrollView, View, FlatList, Text, Image, StyleSheet, Dimensions,ActivityIndicator,Button } from 'react-native'
-import Category from './Category'
 import { graphql } from 'react-apollo'
 import result from 'lodash/result';
 
@@ -25,8 +24,18 @@ const styles = StyleSheet.create({
 })
 
 class Categories extends React.Component{
+
+  constructor(props){
+    super(props)
+    this.state={
+      refetching:false
+    }
+  }
   onLoadMore(){
-    this.props.fetchMore(this.props.lastCursor,this.props.parent);
+    this.setState({ refetching: true });
+    this.props.fetchMore(this.props.lastCursor,this.props.parent)
+    .then(()=> this.setState({ refetching: false }))
+    .catch(()=> this.setState({ refetching: false }))
   }
 
   render(){
@@ -42,6 +51,11 @@ class Categories extends React.Component{
             return <Image key={info.index} source={{uri: info.item.content[0].imageurl}} style={styles.image}/>
           }}
           />
+        }
+        {this.state.refetching && 
+          <View style={{padding:10}}>
+             <ActivityIndicator size="large" color="#00ff00" />
+          </View>
         }
     </View>
     )
@@ -64,6 +78,7 @@ const mapResultsToProps = ({ data }) => {
     fetchMore:(lastCursor,parent) => data.fetchMore({
       variables: { limit: 20, cursor: lastCursor, idcategory: parent},
       updateQuery: (prev, { fetchMoreResult }) => {
+        console.log("fetchMoreResult",fetchMoreResult)
         if (!fetchMoreResult) return prev;
         return Object.assign({}, prev, {
           get_discovery_kol_data: Object.assign({}, prev.get_discovery_kol_data, {
