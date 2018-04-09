@@ -25,39 +25,25 @@ const styles = StyleSheet.create({
 })
 
 class Categories extends React.Component{
-  constructor(props) {
-    super(props)
-  }
   onLoadMore(){
-    this.props.fetchMore({
-      variables: { limit: 20, cursor: this.props.lastCursor, idcategory: this.props.parent},
-      updateQuery: (prev, { fetchMoreResult }) => {
-        if (!fetchMoreResult) return prev;
-        return Object.assign({}, prev, {
-              get_discovery_kol_data: Object.assign({}, prev.get_discovery_kol_data, {
-                postKol: prev.get_discovery_kol_data.postKol.concat(fetchMoreResult.get_discovery_kol_data.postKol)  || [],
-                lastCursor: fetchMoreResult.get_discovery_kol_data.lastCursor || '',
-              })
-            });
-       }
-    })
+    this.props.fetchMore(this.props.lastCursor,this.props.parent);
   }
 
   render(){
     const categories = this.props.postKol
     return(
       <View style={styles.container}>
-      <Button title="Load More" onPress={()=>{this.onLoadMore()}}/>
-      { this.props.loading ? 
-        <View style={styles.horizontal}>
-            <ActivityIndicator size="large" color="#00ff00" />
-      </View> : 
-       <FlatList  numColumns = {3} data = {categories} renderItem = {(info) => {
-          return <Image key={info.index} source={{uri: info.item.content[0].imageurl}} style={styles.image}/>
-        }}
-      />
-    }
-</View>
+        <Button title="Load More" onPress={()=>{this.onLoadMore()}}/>
+        { this.props.loading ? 
+          <View style={styles.horizontal}>
+              <ActivityIndicator size="large" color="#00ff00" />
+          </View> : 
+          <FlatList  numColumns = {3} data = {categories} renderItem = {(info) => {
+            return <Image key={info.index} source={{uri: info.item.content[0].imageurl}} style={styles.image}/>
+          }}
+          />
+        }
+    </View>
     )
     
   }
@@ -75,9 +61,19 @@ const mapResultsToProps = ({ data }) => {
 		postKol: result(data, 'get_discovery_kol_data.postKol', []),
     lastCursor: result(data, 'get_discovery_kol_data.lastCursor', ''),
     errors: result(data, 'get_discovery_kol_data.errors', null),
-    fetchMore:data.fetchMore
-	})
-	
+    fetchMore:(lastCursor,parent) => data.fetchMore({
+      variables: { limit: 20, cursor: lastCursor, idcategory: parent},
+      updateQuery: (prev, { fetchMoreResult }) => {
+        if (!fetchMoreResult) return prev;
+        return Object.assign({}, prev, {
+          get_discovery_kol_data: Object.assign({}, prev.get_discovery_kol_data, {
+            postKol: prev.get_discovery_kol_data.postKol.concat(fetchMoreResult.get_discovery_kol_data.postKol)  || [],
+            lastCursor: fetchMoreResult.get_discovery_kol_data.lastCursor || '',
+          })
+        });
+      }
+    })
+	})	
 }
 
 export default graphql(CATEGORY_QUERY, 

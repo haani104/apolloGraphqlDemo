@@ -31,9 +31,7 @@ class Home extends React.Component {
             <MainCategories
               handleOnCategoryTouch={this.handleOnCategoryTouch}
             />
-
             <Categories parent={this.state.id}/>
-
          </View>
       )
 
