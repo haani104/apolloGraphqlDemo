@@ -5,7 +5,7 @@ import result from 'lodash/result';
 
 import { CATEGORY_QUERY } from '../queries'
 
-let { width } = Dimensions.get('window');
+let { width,height } = Dimensions.get('window');
 const styles = StyleSheet.create({
   image: {
     height: 104,
@@ -31,23 +31,24 @@ class Categories extends React.Component{
       refetching:false
     }
   }
-  onLoadMore(){
-    this.setState({ refetching: true });
-    this.props.fetchMore(this.props.lastCursor,this.props.parent)
-    .then(()=> this.setState({ refetching: false }))
-    .catch(()=> this.setState({ refetching: false }))
+  onLoadMore=()=>{
+    if(this.props.lastCursor){
+      this.setState({ refetching: true });
+      this.props.fetchMore(this.props.lastCursor,this.props.parent)
+      .then(()=> this.setState({ refetching: false }))
+      .catch(()=> this.setState({ refetching: false })) 
+    }
   }
 
   render(){
-    const categories = this.props.postKol
+    const categories = this.props.postKol;
     return(
       <View style={styles.container}>
-        <Button title="Load More" onPress={()=>{this.onLoadMore()}}/>
         { this.props.loading ? 
           <View style={styles.horizontal}>
               <ActivityIndicator size="large" color="#00ff00" />
           </View> : 
-          <FlatList  numColumns = {3} data = {categories} renderItem = {(info) => {
+          <FlatList  numColumns = {3} data = {categories} onEndReachedThreshold={1.0} onEndReached={this.onLoadMore} renderItem = {(info) => {
             return <Image key={info.index} source={{uri: info.item.content[0].imageurl}} style={styles.image}/>
           }}
           />
