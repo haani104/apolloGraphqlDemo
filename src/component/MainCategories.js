@@ -1,7 +1,7 @@
 import React from 'react';
 import result from 'lodash/result';
 import { CATEGORY_QUERY } from '../queries';
-import { graphql } from 'react-apollo';
+import { Query } from 'react-apollo';
 import {
   	Text,
 	View,
@@ -43,30 +43,26 @@ class MainCategories extends React.Component{
 	render(){
 		const mainCategories = this.props.categories
 		return (
-			<View style={{padding:5}}>
-				<ScrollView horizontal>
-				{mainCategories && this.displayCategories(mainCategories)}
-				</ScrollView>
-			</View>		
-			)
+			<Query
+				query={CATEGORY_QUERY}
+				variables={{limit: 20, cursor: "", idcategory: 0}}
+			>
+				{
+					({ data }) => {
+						const mainCategories = result(data, 'get_discovery_kol_data.categories', []);
+						const errors = result(data, 'get_discovery_kol_data.errors', null);
+						return(
+							<View style={{padding:5}}>
+								<ScrollView horizontal>
+									{mainCategories && this.displayCategories(mainCategories)}
+								</ScrollView>
+							</View>		
+						)
+			    	}
+				}
+			</Query>
+		)
 	}
 }
-
-const mapPropsToOptions = ({ parent }) => {
-	return ({
-		variables: { limit: 20, cursor: "", idcategory: 0}
-	})
-	
-}
-const mapResultsToProps = ({ data }) => {
-	return ({
-		loading: data.loading,
-		categories: result(data, 'get_discovery_kol_data.categories', []),
-		errors: result(data, 'get_discovery_kol_data.errors', null),
-	})
-	
-}
-
-export default graphql(CATEGORY_QUERY, 
-{ options: mapPropsToOptions, props: mapResultsToProps })(MainCategories)
+export default MainCategories;
 
